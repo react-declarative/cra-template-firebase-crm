@@ -36,7 +36,7 @@ export class TodoDbService {
     };
 
     findByUserId = async (userId: string) => {
-        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).where('userId', '==', userId).limit(1);
+        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).where('userId', '==', userId);
         const query = await ref.get();
         const documents = await Promise.all(query.docs.map(async (document) => {
             const data = await document.data();
