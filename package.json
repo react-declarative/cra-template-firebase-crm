@@ -1,5 +1,5 @@
 {
-  "name": "cra-template-appwrite",
+  "name": "cra-template-firebase-crm",
   "version": "1.0.0",
   "description": "The most advanced CRM Boilerplate for React + Firebase. Contains snippets for automatic state management in a declarative style",
   "keywords": [
@@ -26,12 +26,12 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/react-declarative/cra-template-appwrite/issues"
+    "url": "https://github.com/react-declarative/cra-template-firebase-crm/issues"
   },
-  "homepage": "https://github.com/react-declarative/cra-template-appwrite#readme",
+  "homepage": "https://github.com/react-declarative/cra-template-firebase-crm#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-declarative/cra-template-appwrite.git"
+    "url": "git+https://github.com/react-declarative/cra-template-firebase-crm.git"
   },
   "scripts": {
     "start": "webpack-cli serve",
