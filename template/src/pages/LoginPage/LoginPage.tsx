@@ -40,12 +40,26 @@ const fields: IField[] = [
             return null;
         },
     },
+    {
+        type: FieldType.Checkbox,
+        fieldRightMargin: '0',
+        fieldBottomMargin: '0',
+        title: 'Register',
+        name: 'register',
+    },
 ];
 
 export const LoginPage = observer(() => {
 
-    const handleAuth = async (data: { email: string, password: string }) => {
-        const isOk = await ioc.apiService.login(data);
+    const handleAuth = async (data: { email: string, password: string, register: boolean }) => {
+        let isOk = true;
+        if (data.register) {
+            isOk = await ioc.firebaseService.register(data);
+        }
+        if (!isOk) {
+            return;
+        }
+        isOk = await ioc.firebaseService.login(data);
         if (isOk) {
             ioc.routerService.push('/todos');
         }
@@ -56,6 +70,7 @@ export const LoginPage = observer(() => {
             handler={() => ({
                 email: CC_MOCK_USER_EMAIL,
                 password: CC_MOCK_USER_PASSWORD,
+                register: false,
             })}
             Logo={Logo}
             fields={fields}

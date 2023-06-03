@@ -1,13 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { Models, Query } from 'appwrite';
 import { inject } from "react-declarative";
 
-import ApiService from "../base/ApiService";
+import FirebaseService from "../base/FirebaseService";
 
-import { 
-    CC_DB_TODO_COLLECTION_ID,
-    CC_DB_TODO_DATABASE_ID,
-} from "../../../config/params";
+import { CC_TODO_COLLECTION } from "../../../config/params";
 
 import TYPES from "../../types";
 
@@ -17,59 +13,50 @@ export interface ITodoDto {
     completed: boolean;
 }
 
-export interface ITodoDocument extends Models.Document, ITodoDto {
+export interface ITodoDocument extends ITodoDto {
+    id: string;
 }
 
 export class TodoDbService {
 
-    private readonly apiService = inject<ApiService>(TYPES.apiService);
+    private readonly firebaseService = inject<FirebaseService>(TYPES.firebaseService);
 
     constructor() {
         makeAutoObservable(this);
     };
 
-    findById = async (id: string) => {
-        return await this.apiService.databases.getDocument<ITodoDocument>(
-            CC_DB_TODO_DATABASE_ID,
-            CC_DB_TODO_COLLECTION_ID,
-            id,
-        );
+    findById = async (id: string): Promise<ITodoDocument> => {
+        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).doc(id);
+        const document = await ref.get();
+        const data = await document.data();
+        if (!data) {
+            throw new Error('Document not found');
+        }
+        return { id: document.id, ...data } as ITodoDocument;
     };
 
     findByUserId = async (userId: string) => {
-        return await this.apiService.databases.listDocuments<ITodoDocument>(
-            CC_DB_TODO_DATABASE_ID,
-            CC_DB_TODO_COLLECTION_ID,
-            [
-                Query.equal('userId', userId),
-            ],
-        );
+        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).where('userId', '==', userId).limit(1);
+        const query = await ref.get();
+        const documents = await Promise.all(query.docs.map(async (document) => {
+            const data = await document.data();
+            return { id: document.id, ...data } as ITodoDocument;
+        }));
+        return documents;
     };
 
     create = async (payload: ITodoDto) => {
-        return await this.apiService.databases.createDocument<ITodoDocument>(
-            CC_DB_TODO_DATABASE_ID,
-            CC_DB_TODO_COLLECTION_ID,
-            'unique()',
-            payload,
-        );
+        return await this.firebaseService.db.collection(CC_TODO_COLLECTION).add(payload);
     };
 
     update = async (id: string, payload: Partial<ITodoDto>) => {
-        return await this.apiService.databases.updateDocument<ITodoDocument>(
-            CC_DB_TODO_DATABASE_ID,
-            CC_DB_TODO_COLLECTION_ID,
-            id,
-            payload,
-        );
+        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).doc(id);
+        await ref.update(payload);
     };
 
     remove = async (id: string) => {
-        return await this.apiService.databases.deleteDocument(
-            CC_DB_TODO_DATABASE_ID,
-            CC_DB_TODO_COLLECTION_ID,
-            id,
-        );
+        const ref = this.firebaseService.db.collection(CC_TODO_COLLECTION).doc(id);
+        await ref.delete();
     };
 
 };

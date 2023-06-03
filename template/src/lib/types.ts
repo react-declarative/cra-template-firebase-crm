@@ -1,5 +1,5 @@
 const baseServices = {
-    apiService: Symbol.for('apiService'),
+    firebaseService: Symbol.for('firebaseService'),
     alertService: Symbol.for('alertService'),
     routerService: Symbol.for('routerService'),
     errorService: Symbol.for('errorService'),

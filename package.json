@@ -1,7 +1,7 @@
 {
   "name": "cra-template-appwrite",
-  "version": "1.0.14",
-  "description": "The most advanced CRM Boilerplate for React + AppWrite. Contains snippets for automatic state management in a declarative style",
+  "version": "1.0.0",
+  "description": "The most advanced CRM Boilerplate for React + Firebase. Contains snippets for automatic state management in a declarative style",
   "keywords": [
     "react",
     "javascript",
@@ -21,8 +21,7 @@
     "baas",
     "backend-as-a-service",
     "declarative-programming",
-    "web-tools",
-    "appwrite"
+    "web-tools"
   ],
   "author": "",
   "license": "ISC",
@@ -36,11 +35,11 @@
   },
   "scripts": {
     "start": "webpack-cli serve",
-    "start:proxy": "ws --config-file ./template/lws.config.js",
     "test": "rimraf test && npx create-react-app test --template=file:./",
-    "msw-init": "npx msw init template/public/ --save"
+    "start:emulator": "cd template/firebase && firebase emulators:start"
   },
   "devDependencies": {
+    "@types/lodash": "4.14.195",
     "esbuild-loader": "2.19.0",
     "fork-ts-checker-webpack-plugin": "7.2.13",
     "html-webpack-plugin": "5.5.0",
@@ -63,13 +62,14 @@
     "@types/uuid": "8.3.4",
     "clsx": "1.2.1",
     "dayjs": "1.11.5",
+    "firebase": "9.22.1",
     "history": "5.3.0",
     "lodash": "4.17.21",
     "mobx": "6.6.2",
     "mobx-react": "7.5.3",
     "path-to-regexp": "6.2.0",
     "react": "18.2.0",
-    "react-declarative": "2.2.198",
+    "react-declarative": "2.2.208",
     "react-dom": "18.2.0",
     "resize-observer-polyfill": "1.5.1",
     "tss-react": "4.3.4",
@@ -88,8 +88,5 @@
   "files": [
     "template",
     "template.json"
-  ],
-  "msw": {
-    "workerDirectory": "template/public"
-  }
+  ]
 }

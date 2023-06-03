@@ -30,7 +30,7 @@ export const UserInfo = observer(() => (
         </Grid>
         <Grid item>
             <Stack justifyContent="center" height="100%">
-                <Button onClick={() => ioc.apiService.logout()}>
+                <Button onClick={() => ioc.firebaseService.logout()}>
                     Logout
                 </Button>
             </Stack>

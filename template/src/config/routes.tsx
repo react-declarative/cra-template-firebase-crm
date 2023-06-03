@@ -12,10 +12,10 @@ export const routes: ISwitchItem[] = [
   {
     path: '/',
     prefetch: async () => {
-      await ioc.apiService.prefetch();
+      await ioc.firebaseService.prefetch();
     },
     redirect: () => {
-      if (ioc.apiService.isAuthorized) {
+      if (ioc.firebaseService.isAuthorized) {
         return "/todos";
       }
       return "/login-page";

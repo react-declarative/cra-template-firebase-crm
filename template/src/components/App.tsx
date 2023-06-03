@@ -44,7 +44,7 @@ const App = observer(() => {
   const handleLoadEnd = () => setLoader(false);
   const handleAction = async (action: string) => {
     if (action === 'logout-action') {
-      await ioc.apiService.logout();
+      await ioc.firebaseService.logout();
     }
   };
   const handleInit = async () => {
