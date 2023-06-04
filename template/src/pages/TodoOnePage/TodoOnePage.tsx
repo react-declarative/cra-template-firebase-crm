@@ -23,7 +23,7 @@ const actions: IActionTrigger[] = [
 ];
 
 const handleBack = () => {
-    ioc.routerService.push('/todos');
+    ioc.routerService.push('/todo_list');
 };
 
 export const TodoOnePage = observer(({
@@ -48,7 +48,7 @@ export const TodoOnePage = observer(({
     return (
         <>
             <Breadcrumbs
-                title='Todos'
+                title='Todo list'
                 subtitle={id}
                 onBack={handleBack}
             />

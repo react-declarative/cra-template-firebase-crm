@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 
-import { Switch, Scaffold, serviceManager } from "react-declarative";
+import { Switch, Scaffold, Scaffold2, serviceManager } from "react-declarative";
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,12 +8,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import UserInfo from "./common/UserInfo";
 
 import useLoader from "../hooks/useLoader";
+import useRouteItem from "../hooks/useRouteItem";
 
-import routes from "../config/routes";
+import routes, { sideMenuClickMap } from "../config/routes";
 import sidemenu from "../config/sidemenu";
 import scaffoldmenu from "../config/scaffoldmenu";
 
 import ioc from "../lib/ioc";
+
+import { CC_APP_NAME } from "../config/params";
 
 const Loader = () => (
   <Box
@@ -39,6 +42,7 @@ const Loader = () => (
 const Fragment = () => <></>;
 
 const App = observer(() => {
+  const item = useRouteItem();
   const { loader, setLoader } = useLoader();
   const handleLoadStart = () => setLoader(true);
   const handleLoadEnd = () => setLoader(false);
@@ -54,15 +58,19 @@ const App = observer(() => {
     await serviceManager.unload(true);
   };
   return (
-    <Scaffold
-      dense
-      loadingLine={loader}
+    <Scaffold2
+      appName={CC_APP_NAME}
+      activeOptionPath={item?.sideMenu || "root.example.todo_list"}
+      loading={loader}
       options={sidemenu}
       actions={scaffoldmenu}
       Loader={Loader}
       BeforeSearch={UserInfo}
-      onOptionClick={(name) => ioc.routerService.push(name)}
+      onOptionClick={(path) => {
+        ioc.routerService.push(sideMenuClickMap[path] || "/not-found");
+      }}
       onAction={handleAction}
+
     >
       <Switch
         Loader={Fragment}
@@ -73,7 +81,7 @@ const App = observer(() => {
         onInit={handleInit}
         onDispose={handleDispose}
       />
-    </Scaffold>
+    </Scaffold2>
   );
 });
 

@@ -153,7 +153,7 @@ export const TodoListPage = observer(() => {
     };
 
     const handleClick = (row: any) => {
-        ioc.routerService.push(`/todos/${row.id}`);
+        ioc.routerService.push(`/todo_list/${row.id}`);
     };
 
     return (

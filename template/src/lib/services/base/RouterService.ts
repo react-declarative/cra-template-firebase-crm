@@ -12,7 +12,8 @@ export class RouterService implements BrowserHistory {
   action: Action = browserHistory.action;
 
   constructor() {
-    makeAutoObservable(this)
+    makeAutoObservable(this);
+    browserHistory.listen(this.updateState);
   };
 
   updateState = () => {

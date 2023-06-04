@@ -61,7 +61,7 @@ export const LoginPage = observer(() => {
         }
         isOk = await ioc.firebaseService.login(data);
         if (isOk) {
-            ioc.routerService.push('/todos');
+            ioc.routerService.push('/todo_list');
         }
     };
 

@@ -8,25 +8,32 @@ import LoginPage from '../pages/LoginPage';
 
 import ioc from '../lib/ioc';
 
-export const routes: ISwitchItem[] = [
+interface IRouteItem extends ISwitchItem {
+  sideMenu?: string;
+}
+
+export const routes: IRouteItem[] = [
   {
     path: '/',
+    sideMenu: "root.example.todo_list",
     prefetch: async () => {
       await ioc.firebaseService.prefetch();
     },
     redirect: () => {
       if (ioc.firebaseService.isAuthorized) {
-        return "/todos";
+        return "/todo_list";
       }
       return "/login-page";
     },
   },
   {
-    path: '/todos',
+    path: '/todo_list',
+    sideMenu: "root.example.todo_list",
     element: TodoListPage,
   },
   {
-    path: '/todos/:id',
+    path: '/todo_list/:id',
+    sideMenu: "root.example.todo_list",
     element: TodoOnePage,
   },
   {
@@ -42,5 +49,9 @@ export const routes: ISwitchItem[] = [
     element: ErrorPage,
   }
 ];
+
+export const sideMenuClickMap: Record<string, string> = {
+  "root.example.todo_list": "/todo_list",
+};
 
 export default routes;
